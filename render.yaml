@@ -2,6 +2,7 @@ services:
   - type: web
     name: chika100
     runtime: node
+    repo: https://github.com/yo4e/chika100
     region: singapore
     plan: free
     branch: main
