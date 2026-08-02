@@ -1,0 +1,16 @@
+{
+  "name": "chika100",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A short turn-based delivery roguelike for the browser.",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "build": "node scripts/build.mjs",
+    "start": "node dist/server.js",
+    "test": "node --test --test-reporter=spec"
+  }
+}

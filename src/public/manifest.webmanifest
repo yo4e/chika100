@@ -1,0 +1,9 @@
+{
+  "name": "地下百階まで、配達です。",
+  "short_name": "地下百階",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#10181a",
+  "theme_color": "#10181a",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#10181a">
+    <meta name="description" content="地下100階へ荷物を届ける、短編ターン制ブラウザゲーム。">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/styles.css?v=1.0.0">
+    <title>地下百階まで、配達です。</title>
+  </head>
+  <body>
+    <main id="app" class="app-shell">
+      <header class="site-header">
+        <a class="mini-logo" href="/" aria-label="タイトルへ">CHIKA<span>100</span></a>
+        <div id="connection-status" class="connection-status" role="status">配達先を照会中…</div>
+      </header>
+
+      <section id="title-screen" class="screen title-screen">
+        <div class="title-copy">
+          <p class="eyebrow">MIDNIGHT DELIVERY / DAILY ROUTE</p>
+          <h1>地下百階まで、<br><em>配達です。</em></h1>
+          <p class="intro">最後の配達先は、古い建物の地下100階。<br>荷物用エレベーターは、下へしか動かない。</p>
+        </div>
+        <div class="title-console panel">
+          <div class="console-display">
+            <span>本日の建物</span>
+            <strong id="daily-label">照会中…</strong>
+          </div>
+          <button id="start-button" class="primary-button" type="button" disabled>
+            <span>本日の配達を始める</span><b aria-hidden="true">↓</b>
+          </button>
+          <button id="howto-button" class="text-button" type="button">遊び方を確認</button>
+          <div class="best-line"><span>この端末の自己ベスト</span><strong id="title-best">記録なし</strong></div>
+        </div>
+        <p class="privacy-note">アカウント不要・記録はこの端末だけに保存されます</p>
+      </section>
+
+      <section id="game-screen" class="screen game-screen" hidden>
+        <div class="game-topline">
+          <div>
+            <span class="eyebrow">DELIVERY IN PROGRESS</span>
+            <h2 id="floor-label">地下10階</h2>
+          </div>
+          <div class="turn-counter"><span>経過</span><strong id="turn-count">0</strong><small>ターン</small></div>
+        </div>
+
+        <div class="game-layout">
+          <div class="map-column">
+            <div class="map-frame">
+              <div class="map-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div id="game-map" class="game-map" role="img" aria-label="地下フロアの地図"></div>
+            </div>
+            <div class="legend" aria-label="地図記号">
+              <span><i class="legend-player">配</i>自分</span>
+              <span><i class="legend-exit">降</i>出口</span>
+              <span><i class="legend-enemy">掃</i>障害</span>
+              <span><i class="legend-item">飲</i>用品</span>
+              <span><i class="legend-trap">段</i>段差</span>
+            </div>
+          </div>
+
+          <aside class="game-sidebar">
+            <div class="status-panel panel">
+              <div class="meter-row">
+                <div class="meter-heading"><span>体力</span><strong id="health-value">16 / 16</strong></div>
+                <div class="meter"><i id="health-meter"></i></div>
+              </div>
+              <div class="meter-row package-row">
+                <div class="meter-heading"><span>荷物状態</span><strong id="package-value">14 / 14</strong></div>
+                <div class="meter"><i id="package-meter"></i></div>
+              </div>
+              <div id="effects-list" class="effects-list">効果なし</div>
+            </div>
+
+            <div class="log-panel panel">
+              <span class="panel-label">業務記録</span>
+              <ol id="action-log" aria-live="polite"></ol>
+            </div>
+
+            <div class="controls panel">
+              <div class="controls-copy">
+                <span class="panel-label">移動 / 押し返す</span>
+                <small>矢印キー・WASDにも対応</small>
+              </div>
+              <div class="dpad" aria-label="移動ボタン">
+                <button type="button" data-move="up" aria-label="上へ移動">▲</button>
+                <button type="button" data-move="left" aria-label="左へ移動">◀</button>
+                <div class="dpad-center" aria-hidden="true">＋</div>
+                <button type="button" data-move="right" aria-label="右へ移動">▶</button>
+                <button type="button" data-move="down" aria-label="下へ移動">▼</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="skill-screen" class="screen intermission-screen" hidden>
+        <div class="elevator-lines" aria-hidden="true"></div>
+        <div class="intermission-card panel">
+          <p class="eyebrow">ROUTE CHECKPOINT</p>
+          <h2><span id="cleared-floor">B10</span> 通過</h2>
+          <p>エレベーターが次の階へ降りるまで、配達準備をひとつ選んでください。</p>
+          <div id="skill-choices" class="skill-choices"></div>
+          <p class="choice-note">選んだ効果は、この配達が終わるまで有効です</p>
+        </div>
+      </section>
+
+      <section id="result-screen" class="screen result-screen" hidden>
+        <div class="result-heading">
+          <p id="result-kicker" class="eyebrow">DELIVERY REPORT</p>
+          <h2 id="result-title">配達完了</h2>
+          <p id="result-reason"></p>
+        </div>
+        <div class="result-grid">
+          <div class="result-score panel">
+            <span>総合スコア</span>
+            <strong id="total-score">0</strong>
+            <p id="best-result">自己ベストを更新しました</p>
+          </div>
+          <dl class="result-stats panel">
+            <div><dt>到達階</dt><dd id="result-floor">B100</dd></div>
+            <div><dt>荷物状態</dt><dd id="result-package">0 / 0</dd></div>
+            <div><dt>残り体力</dt><dd id="result-health">0 / 0</dd></div>
+            <div><dt>使用ターン</dt><dd id="result-turns">0</dd></div>
+          </dl>
+          <dl id="score-breakdown" class="score-breakdown panel"></dl>
+        </div>
+        <div class="result-actions">
+          <button id="retry-button" class="primary-button" type="button"><span>同じ建物へ再挑戦</span><b aria-hidden="true">↻</b></button>
+          <button id="back-button" class="text-button" type="button">タイトルへ戻る</button>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="howto-dialog" class="howto-dialog">
+      <button id="howto-close" class="dialog-close" type="button" aria-label="閉じる">×</button>
+      <p class="eyebrow">DELIVERY MANUAL</p>
+      <h2>遊び方</h2>
+      <ol>
+        <li><b>一歩ずつ進む</b><span>画面の方向ボタン、または矢印キー・WASDで移動します。</span></li>
+        <li><b>出口「降」を探す</b><span>敵に向かって進むと押し返せます。こちらが動くと敵も動きます。</span></li>
+        <li><b>荷物を守る</b><span>体力か荷物状態が0になると失敗。用品とスキルを活用しましょう。</span></li>
+        <li><b>B100まで届ける</b><span>10階ごとに準備を選び、最下層の受取人を目指します。</span></li>
+      </ol>
+      <button id="howto-start" class="primary-button" type="button"><span>配達を始める</span><b aria-hidden="true">↓</b></button>
+    </dialog>
+
+    <noscript>このゲームを遊ぶにはJavaScriptを有効にしてください。</noscript>
+    <script type="module" src="/app.js?v=1.0.0"></script>
+  </body>
+</html>
