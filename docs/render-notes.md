@@ -4,28 +4,28 @@
 
 ## デプロイ情報
 
-- 実施日:
-- Service名:
-- 公開URL:
+- 実施日: 2026-08-02
+- Service名: `chika100` (`srv-d9nar4bm8hqs73dv8cjg`)
+- 公開URL: https://chika100.onrender.com
 - Region: Singapore
 - Instance type: Free
-- 対象commit:
-- 初回build所要時間:
+- 対象commit: `549c98f4de06209d280f55a4d7687271474fc325`
+- 初回build・deploy所要時間: 約26秒（02:38:12開始、02:38:38 Live）
 - cold start所要時間:
 
 ## 初回デプロイ
 
-- [ ] Renderへ登録し、GitHubアカウントを接続した
-- [ ] GitHub Appに `yo4e/chika100` のアクセスを許可した
-- [ ] `render.yaml` をBlueprintとして読み込めた
-- [ ] `npm ci && npm test && npm run build` が成功した
-- [ ] `npm start` で `server_started` ログが出た
-- [ ] `/api/health` が2xxを返し、deployがLiveになった
-- [ ] 発行された `onrender.com` URLからタイトル画面が開いた
-- [ ] `/api/daily` の日付が日本時間と一致した
-- [ ] runtime logsにAPIアクセスがJSONで表示された
+- [x] Renderへ登録し、CLIをアカウントへ接続した
+- [x] GitHubリポジトリ `yo4e/chika100` から取得できた
+- [x] 公式CLI v2.22.0で `render.yaml` のBlueprint検証が通った
+- [x] `npm ci && npm test && npm run build` が成功した（13 tests passed）
+- [x] `npm start` で `server_started` ログが出た（`0.0.0.0:10000`）
+- [x] `/api/health` が2xxを返し、deployがLiveになった
+- [x] 発行された `onrender.com` URLからタイトルHTMLが返った
+- [x] `/api/daily` の日付が日本時間と一致した
+- [x] runtime logsにAPIアクセスがJSONで表示された
 
-メモ:
+メモ: Node.js 22.23.2が選択された。`/api/config` のbuild IDは `549c98f4de06`。CSP、COOP、Permissions-Policy、Referrer-Policy、X-Content-Type-Options、X-Frame-Optionsの本番レスポンスを確認済み。
 
 ## 実機試遊
 
