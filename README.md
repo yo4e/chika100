@@ -17,7 +17,9 @@
 
 ## ローカル起動
 
-必要環境は Node.js 22 と npm です。外部npmパッケージは使用していません。
+必要環境は Node.js 22.23.4 以降の 22.x と npm です。`.nvmrc` と Render の `NODE_VERSION` は 22.23.4 に固定しています。外部npmパッケージは使用していません。
+
+[2026年10月21日のNode.jsセキュリティ修正](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases)を含む版を使用してください。`engines` の変更だけでは、起動済みのNode.jsやRenderの稼働中プロセスは更新されません。
 
 ```bash
 npm ci
@@ -54,6 +56,7 @@ PORT=4173 npm start
 - build時にテストと本番ビルドを実行
 - `/api/health` によるHTTP health check
 - `NODE_ENV=production`
+- `NODE_VERSION=22.23.4`（既存サービスもDashboardの優先設定とbuildログの実行版を確認する）
 
 Render Dashboardで **New → Blueprint** を選び、このGitHubリポジトリを接続してください。GitHub Appのアクセス許可で `yo4e/chika100` を対象に含める必要があります。Blueprintを適用するとbuild、test、startが走り、成功後に `https://chika100.onrender.com` 形式のURLが発行されます（同名が使用中の場合、実際のサブドメインは変わります）。
 
